@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmed Sobhy | Secure Comms</title>
+
+    <link rel="icon" href="logo.png" type="image/png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* --- Contact Page Specific "Terrifying" Visuals --- */
+        
+        /* 1. Glitch Effect */
+        .glitch-wrapper {
+            position: relative;
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            color: var(--text-bright);
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        .glitch-wrapper::before, .glitch-wrapper::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-surface);
+        }
+        .glitch-wrapper::before {
+            left: 3px; text-shadow: -2px 0 var(--accent-alert);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+        .glitch-wrapper::after {
+            left: -3px; text-shadow: -2px 0 var(--accent-cyan);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            40% { clip-path: inset(40% 0 50% 0); }
+            60% { clip-path: inset(80% 0 5% 0); }
+            80% { clip-path: inset(10% 0 70% 0); }
+            100% { clip-path: inset(30% 0 20% 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); }
+            20% { clip-path: inset(80% 0 5% 0); }
+            40% { clip-path: inset(30% 0 20% 0); }
+            60% { clip-path: inset(70% 0 10% 0); }
+            80% { clip-path: inset(20% 0 50% 0); }
+            100% { clip-path: inset(50% 0 30% 0); }
+        }
+
+        /* 2. Cyber Inputs */
+        .form-group { position: relative; margin-bottom: 2.5rem; }
+        .form-group label {
+            position: absolute; top: -10px; left: 15px; 
+            background: #030507; padding: 0 10px; font-size: 0.7rem; 
+            color: var(--accent-cyan); letter-spacing: 2px; text-transform: uppercase;
+            z-index: 5;
+        }
+        .cyber-input {
+            width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border-glass);
+            color: var(--text-bright); font-family: var(--font-mono); font-size: 0.9rem;
+            padding: 1.5rem; outline: none; transition: 0.3s; border-radius: 2px;
+            position: relative;
+        }
+        .cyber-input:focus {
+            border-color: var(--accent-alert); /* لون أحمر/وردي حاد للتركيز يعطي إحساس بالخطر */
+            box-shadow: inset 0 0 20px rgba(255, 0, 85, 0.1), 0 0 15px rgba(255, 0, 85, 0.2);
+        }
+
+        /* 3. Terminal Radar / Scanning Effect */
+        .radar-box {
+            position: relative; overflow: hidden;
+            border: 1px solid rgba(0, 255, 102, 0.2); background: rgba(0,0,0,0.8);
+            padding: 1.5rem; border-radius: 2px; min-height: 250px;
+        }
+        .radar-line {
+            position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--accent-green); box-shadow: 0 0 15px var(--accent-green);
+            animation: scanline 3s linear infinite; opacity: 0.5;
+        }
+        @keyframes scanline {
+            0% { top: -5%; } 100% { top: 105%; }
+        }
+
+        .terminal-text {
+            color: var(--accent-green); font-size: 0.75rem; line-height: 1.8;
+            font-family: var(--font-mono); display: flex; flex-direction: column; gap: 8px;
+        }
+        .terminal-text span.system-alert { color: var(--accent-alert); }
+        .terminal-text span.system-cyan { color: var(--accent-cyan); }
+
+        /* Overrides for Contact Layout */
+        .contact-layout { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2rem; padding: 6rem 4%; max-width: 1600px; margin: 0 auto; position: relative; z-index: 10;}
+        .panel-identity { grid-column: span 3; }
+        .panel-form { grid-column: span 6; }
+        .panel-terminal { grid-column: span 3; }
+
+        @media (max-width: 1024px) {
+            .panel-identity, .panel-form, .panel-terminal { grid-column: span 12; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-glow" style="background: radial-gradient(circle, rgba(255, 0, 85, 0.05) 0%, rgba(3,5,7,0) 70%);"></div>
+    <div class="cyber-wave-container">
+        <svg class="cyber-wave-svg" viewBox="0 0 100 1000" preserveAspectRatio="none">
+            <path d="M50,0 Q90,50 50,100 T50,200 Q90,250 50,300 T50,400 Q90,450 50,500 T50,600 Q90,650 50,700 T50,800 Q90,850 50,900 T50,1000" fill="none" stroke="var(--accent-alert)" stroke-width="1.5" />
+        </svg>
+    </div>
+
+    <nav class="cyber-nav">
+        <div class="nav-logo" style="font-family: var(--font-display); font-size: 1.2rem; color: var(--text-bright);">AHMED SOBHY <span style="color: var(--accent-alert); font-family: var(--font-mono); font-size: 0.7rem;">// SECURE_COMMS</span></div>
+        <div class="nav-links">
+            <a href="index.html">00. Root</a>
+            <a href="dashboard.html">01. Dashboard</a>
+            <a href="contact.html" class="active" style="color: var(--accent-alert); border-bottom: 1px solid var(--accent-alert);">02. Comms</a>
+        </div>
+    </nav>
+
+    <main class="contact-layout">
+        
+        <aside class="bento-panel panel-identity" style="animation-delay: 0.1s;">
+            <div class="panel-label" style="color: var(--accent-alert);">Node_ID</div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <div style="width: 80px; height: 80px; border: 1px solid var(--accent-alert); border-radius: 50%; margin: 0 auto 1.5rem; display: flex; justify-content: center; align-items: center; background: rgba(255, 0, 85, 0.05); box-shadow: 0 0 20px rgba(255,0,85,0.2);">
+                    <i class="fas fa-fingerprint" style="font-size: 2.5rem; color: var(--accent-alert);"></i>
+                </div>
+                <h2 style="font-family: var(--font-display); font-size: 1.5rem; letter-spacing: -1px; text-transform: uppercase;">Operator: Ahmed</h2>
+                <div style="color: var(--text-muted); font-size: 0.7rem; margin: 1rem 0 2rem; text-transform: uppercase; letter-spacing: 2px;">Clearance Level: Alpha</div>
+                
+                <div style="text-align: left; background: rgba(0,0,0,0.5); padding: 1rem; border-radius: 2px; border: 1px solid var(--border-glass);">
+                    <div style="font-size: 0.65rem; color: var(--accent-cyan); margin-bottom: 5px;">> PGP FINGERPRINT</div>
+                    <div style="font-size: 0.6rem; color: var(--text-muted); word-break: break-all; letter-spacing: 1px;">
+                        7F9A 2B4C 8D1E 5F6G<br>3H9J 1K2L 4M5N 7P8Q
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 15px;">
+                    <a href="https://github.com/YOUR_GITHUB" target="_blank" class="cyber-btn" style="padding: 0.8rem; border-color: var(--border-glass); color: var(--text-muted);"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank" class="cyber-btn" style="padding: 0.8rem; border-color: var(--border-glass); color: var(--text-muted);"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </aside>
+
+        <section class="bento-panel panel-form" style="animation-delay: 0.2s;">
+            <div class="panel-label">Secure_Channel</div>
+            
+            <h1 class="glitch-wrapper" data-text="INJECT PAYLOAD">INJECT PAYLOAD</h1>
+            <p style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 3rem;">Warning: All transmissions are heavily encrypted and monitored via RSA-4096 protocols.</p>
+            
+            <form id="secure-form" class="cyber-form">
+                <div class="form-group">
+                    <label for="name">Operator Alias (Name)</label>
+                    <input type="text" id="name" class="cyber-input" placeholder="Enter identification..." required autocomplete="off">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Return Node (Email)</label>
+                    <input type="email" id="email" class="cyber-input" placeholder="node@network.com" required autocomplete="off">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Encrypted Data (Message)</label>
+                    <textarea id="message" rows="6" class="cyber-input" placeholder="Write payload here. Awaiting data insertion..." required></textarea>
+                </div>
+                
+                <button type="submit" class="cyber-btn" id="submit-btn" style="width: 100%; background: transparent; border: 1px solid var(--accent-alert); color: var(--accent-alert); font-size: 1rem; padding: 1.2rem;">
+                    <i class="fas fa-radiation" style="margin-right: 10px;"></i> Transmit Package
+                </button>
+            </form>
+        </section>
+
+        <aside class="bento-panel panel-terminal" style="animation-delay: 0.3s;">
+            <div class="panel-label">Telemetry_Log</div>
+            <h3 style="font-family: var(--font-display); font-size: 1rem; margin-bottom: 1.5rem; text-transform: uppercase; color: var(--text-bright);">Active Trace</h3>
+            
+            <div class="radar-box">
+                <div class="radar-line"></div>
+                <div class="terminal-text" id="terminal-output">
+                    <span>> Establishing secure handshake...</span>
+                    <span class="system-cyan">> Node connected via IPv6 Proxy.</span>
+                    <span class="system-alert">> Warning: Origin IP obfuscation detected.</span>
+                    <span>> Generating asymmetric keys...</span>
+                    <span>> Listening on PORT 8080.</span>
+                    <span>> <span style="animation: blink 1s infinite;">_</span></span>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <script>
+        // Terminal Reaction Script
+        const form = document.getElementById('secure-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const terminalOutput = document.getElementById('terminal-output');
+
+        // Form Submit Simulation (The "Terrifying" Hack Sequence)
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Visual lock of the button
+            submitBtn.style.pointerEvents = 'none';
+            submitBtn.style.background = 'var(--accent-alert)';
+            submitBtn.style.color = '#000';
+            submitBtn.innerHTML = '<i class="fas fa-skull"></i> EXECUTING...';
+
+            // Terminal sequence array
+            const sequence = [
+                "<span class='system-alert'>> [CRITICAL] PACKET INJECTION DETECTED.</span>",
+                "> Analyzing payload structure...",
+                "> Stripping metadata...",
+                "<span class='system-cyan'>> Encrypting payload via AES-256-GCM... OK.</span>",
+                "> Routing through proxy nodes: [TOR_NODE_1] -> [VPN_GATE]...",
+                "<span class='system-green' style='color: #00FF66;'>> TRANSMISSION SUCCESSFUL.</span>",
+                "> Connection terminated to protect origin."
+            ];
+
+            terminalOutput.innerHTML = ''; // Clear terminal
+            let i = 0;
+
+            function printLine() {
+                if (i < sequence.length) {
+                    terminalOutput.innerHTML += sequence[i] + "<br>";
+                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                    i++;
+                    setTimeout(printLine, Math.random() * 400 + 200); // Random delay 200-600ms
+                } else {
+                    terminalOutput.innerHTML += "> <span style='animation: blink 1s infinite;'>_</span>";
+                    
+                    // Reset Button after sequence
+                    setTimeout(() => {
+                        submitBtn.style.pointerEvents = 'auto';
+                        submitBtn.style.background = 'transparent';
+                        submitBtn.style.color = 'var(--accent-alert)';
+                        submitBtn.innerHTML = '<i class="fas fa-radiation" style="margin-right: 10px;"></i> Transmit New Package';
+                        form.reset();
+                    }, 2000);
+                }
+            }
+            
+            printLine();
+        });
+
+        // 1. Force Scroll to Top & Wave Animation Logic
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.scrollTo(0, 0);
+
+        const waveSvg = document.querySelector('.cyber-wave-svg');
+        if (waveSvg) {
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0;
+                const moveAmount = scrollPercent * -66.66;
+                requestAnimationFrame(() => {
+                    waveSvg.style.transform = `translateY(${moveAmount}%)`;
+                });
+            });
+        }
+    </script>
+</body>
+</html>
