@@ -266,6 +266,26 @@
                 });
             });
         }
+        // Mobile Menu Toggle Logic
+        const mobileMenuBtn = document.querySelector('.mobile-menu-toggle');
+        const navLinksContainer = document.querySelector('.nav-links');
+
+        if (mobileMenuBtn && navLinksContainer) {
+            mobileMenuBtn.addEventListener('click', () => {
+                // إضافة أو إزالة كلاس active لفتح وقفل القائمة
+                navLinksContainer.classList.toggle('active');
+                
+                // تغيير الأيقونة من ثلاث شرط إلى علامة X
+                const icon = mobileMenuBtn.querySelector('i');
+                if (navLinksContainer.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
     </script>
 </body>
 </html>

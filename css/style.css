@@ -208,13 +208,72 @@ section { padding: 8rem 0; }
 
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
 
+/* Mobile Menu Button */
+.mobile-menu-toggle {
+    display: none;
+    color: var(--accent-cyan);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.mobile-menu-toggle:hover {
+    color: var(--text-bright);
+    text-shadow: 0 0 10px var(--accent-cyan);
+}
+
 @media (max-width: 768px) {
     .about-grid { grid-template-columns: 1fr; }
     
-    /* Ensure layered text scales correctly on mobile */
-    .hero-name-bg, .hero-name-fg { font-size: 5rem; }
+    /* 1. إصلاح حجم النص: استخدام vw ليتناسب تلقائياً مع عرض شاشة الموبايل ولا يُقطع */
+    .hero-name-bg, .hero-name-fg { 
+        font-size: 13vw; 
+        letter-spacing: -1px;
+    }
     
-    .nav-links { display: none; }
+    /* 2. تكبير حجم الصورة: لتأخذ مساحة مناسبة مقارنة بالكوكب وتبرز بشكل أفضل */
+    .hero-image-wrapper { 
+        width: 75vw; 
+        max-width: 320px; 
+    }
+
+    /* 3. تعديل حجم أيقونات التقنيات لتخفيف الزحمة على الشاشة */
+    .orbit-icon {
+        font-size: 1.4rem;
+    }
+    
+    /* إظهار زرار القائمة على الموبايل */
+    .mobile-menu-toggle { display: block; }
+    
+    /* تصميم القائمة المنسدلة للموبايل */
+    .nav-links { 
+        position: absolute;
+        top: 100%; /* تظهر تحت البار مباشرة */
+        left: 0;
+        width: 100%;
+        background: rgba(3, 5, 7, 0.95);
+        backdrop-filter: blur(15px);
+        border-bottom: 1px solid var(--border-glass);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* إخفاء القائمة في البداية */
+        max-height: 0;
+        overflow: hidden;
+        padding: 0;
+        transition: all 0.4s var(--ease-out-expo); /* أنيميشن النزول */
+    }
+    
+    /* الكلاس الذي سيتم تفعيله بالجافاسكريبت لفتح القائمة */
+    .nav-links.active {
+        max-height: 400px;
+        padding: 2rem 0;
+    }
+
+    .nav-links a {
+        margin: 0 0 1.5rem 0; /* مسافات عمودية بدلاً من الأفقية */
+        font-size: 1.1rem;
+    }
+    .nav-links a:last-child { margin-bottom: 0; }
     .contact-cta h3 { font-size: 2.5rem; }
     .project-card { flex-direction: column; padding: 2rem; gap: 1.5rem;}
     .project-label { left: 20px; }
