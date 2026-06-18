@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ahmed Sobhy | System Dashboard</title>
     
+    <link rel="icon" href="logo.png" type="image/png">
+
+
+    <!-- Cyber-Tactical Typography -->
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -20,32 +24,47 @@
             --text-muted: #647A8F;
             --font-display: 'Syne', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-mono); }
-        
         body { background-color: var(--bg-main); color: var(--text-bright); overflow-x: hidden; min-height: 100vh; }
 
         /* Background Effects */
         .ambient-glow {
             position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%);
-            width: 70vw; height: 70vh; border-radius: 50%;
+            width: 80vw; height: 80vh; border-radius: 50%;
             background: radial-gradient(circle, rgba(0, 229, 255, 0.05) 0%, rgba(3,5,7,0) 70%);
             z-index: -1; pointer-events: none;
         }
-        
         .cyber-wave-container { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100px; height: 100vh; z-index: -2; opacity: 0.15; filter: drop-shadow(0 0 15px var(--accent-cyan)); }
         .cyber-wave-svg { height: 300vh; width: 100%; will-change: transform; }
 
-        /* Navigation */
+        /* Navigation & Mobile Menu */
         .cyber-nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            background: rgba(3, 5, 7, 0.9); backdrop-filter: blur(10px);
+            background: rgba(3, 5, 7, 0.95); backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--border-glass); display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 4%;
         }
         .nav-logo { font-family: var(--font-display); font-size: 1.2rem; color: var(--text-bright); }
+        .nav-links { display: flex; align-items: center; }
         .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 2rem; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; }
         .nav-links a:hover, .nav-links a.active { color: var(--accent-cyan); border-bottom: 1px solid var(--accent-cyan); padding-bottom: 5px; }
+
+        .mobile-menu-toggle { display: none; color: var(--accent-cyan); font-size: 1.5rem; cursor: pointer; transition: 0.3s; }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle { display: block; }
+            .nav-links { 
+                position: absolute; top: 100%; left: 0; width: 100%;
+                background: rgba(3, 5, 7, 0.98); backdrop-filter: blur(20px);
+                border-bottom: 1px solid var(--border-glass);
+                flex-direction: column; max-height: 0; overflow: hidden; padding: 0;
+                transition: all 0.4s var(--ease-out-expo);
+            }
+            .nav-links.active { max-height: 400px; padding: 2rem 0; }
+            .nav-links a { margin: 0 0 1.5rem 0; font-size: 1.1rem; }
+        }
 
         /* Layout */
         .dashboard-layout { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5rem; padding: 8rem 4% 4rem; max-width: 1600px; margin: 0 auto; position: relative; z-index: 10;}
@@ -53,7 +72,7 @@
         /* Bento Panels */
         .bento-panel {
             background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: 2px;
-            padding: 2rem; position: relative; backdrop-filter: blur(12px);
+            padding: 2.5rem; position: relative; backdrop-filter: blur(12px);
             animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0; transform: translateY(30px);
         }
@@ -61,37 +80,41 @@
         .bento-panel:hover::before { background: var(--accent-cyan); }
         .bento-panel:hover { border-color: rgba(0, 229, 255, 0.4); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        .panel-label { position: absolute; top: 1rem; right: 1rem; font-size: 0.6rem; letter-spacing: 2px; color: var(--accent-cyan); text-transform: uppercase; }
+        .panel-label { position: absolute; top: 1rem; right: 1rem; font-size: 0.65rem; letter-spacing: 2px; color: var(--accent-cyan); text-transform: uppercase; font-weight: bold;}
 
         @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
 
         /* Glitch Effect */
-        .glitch-wrapper { position: relative; font-family: var(--font-display); font-size: 3.5rem; color: var(--text-bright); letter-spacing: -2px; text-transform: uppercase; margin-bottom: 1rem; }
-        .glitch-wrapper::before, .glitch-wrapper::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-surface); }
+        .glitch-wrapper { position: relative; font-family: var(--font-display); font-size: 4rem; color: var(--text-bright); letter-spacing: -2px; text-transform: uppercase; margin-bottom: 1rem; }
+        .glitch-wrapper::before, .glitch-wrapper::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; }
         .glitch-wrapper::before { left: 3px; text-shadow: -2px 0 var(--accent-cyan); animation: glitch-anim 2s infinite linear alternate-reverse; }
         .glitch-wrapper::after { left: -3px; text-shadow: -2px 0 var(--accent-alert); animation: glitch-anim 3s infinite linear alternate-reverse; }
         @keyframes glitch-anim { 0% { clip-path: inset(20% 0 80% 0); } 20% { clip-path: inset(60% 0 10% 0); } 40% { clip-path: inset(40% 0 50% 0); } 60% { clip-path: inset(80% 0 5% 0); } 80% { clip-path: inset(10% 0 70% 0); } 100% { clip-path: inset(30% 0 20% 0); } }
 
         /* Radar Terminal */
-        .radar-box { position: relative; overflow: hidden; border: 1px solid rgba(0, 229, 255, 0.2); background: rgba(0,0,0,0.8); padding: 1.5rem; border-radius: 2px; height: 100%; min-height: 200px;}
+        .radar-box { position: relative; overflow: hidden; border: 1px solid rgba(0, 229, 255, 0.2); background: rgba(0,0,0,0.8); padding: 1.5rem; border-radius: 2px; height: 100%; min-height: 250px;}
         .radar-line { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--accent-cyan); box-shadow: 0 0 15px var(--accent-cyan); animation: scanline 3s linear infinite; opacity: 0.5; }
         @keyframes scanline { 0% { top: -5%; } 100% { top: 105%; } }
-        
         .terminal-text { color: var(--text-muted); font-size: 0.75rem; line-height: 1.8; display: flex; flex-direction: column; gap: 8px; }
+
+        /* Tech Bars */
+        .tech-bar-container { width: 100%; height: 6px; background: rgba(255,255,255,0.05); margin-top: 0.5rem; margin-bottom: 1.2rem; border-radius: 2px; overflow: hidden;}
+        .tech-bar { height: 100%; background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan);}
 
         /* Project Links */
         .cyber-link-card { text-decoration: none; border: 1px solid var(--border-glass); padding: 1.5rem; display: block; border-radius: 2px; transition: 0.3s; background: rgba(0,0,0,0.4); position: relative; overflow: hidden;}
         .cyber-link-card::after { content: '>'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 1.5rem; color: var(--accent-cyan); opacity: 0; transition: 0.3s; font-family: var(--font-display);}
-        .cyber-link-card:hover { border-color: var(--accent-cyan); background: rgba(0, 229, 255, 0.05); transform: translateX(10px);}
+        .cyber-link-card:hover { border-color: var(--accent-cyan); background: rgba(0, 229, 255, 0.05); transform: translateY(-5px);}
         .cyber-link-card:hover::after { opacity: 1; right: 15px; }
 
         /* Spans */
-        .col-8 { grid-column: span 8; }
-        .col-4 { grid-column: span 4; }
+        .col-7 { grid-column: span 7; }
+        .col-5 { grid-column: span 5; }
         .col-6 { grid-column: span 6; }
+        .col-12 { grid-column: span 12; }
         
         @media (max-width: 1024px) {
-            .col-8, .col-4, .col-6 { grid-column: span 12; }
+            .col-7, .col-5, .col-6 { grid-column: span 12; }
         }
     </style>
 </head>
@@ -107,89 +130,133 @@
         <div class="nav-logo">AHMED SOBHY <span style="color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.7rem;">// ROOT_ACCESS</span></div>
         <div class="nav-links">
             <a href="index.html">00. Root</a>
-            <a href="dashboard.html" class="active">01. Dashboard</a>
+            <a href="dashboard.html" style="color: var(--accent-cyan); text-shadow: 0 0 10px rgba(0,229,255,0.5);">01. Dashboard</a>
             <a href="contact.html">02. Comms</a>
         </div>
+        <div class="mobile-menu-toggle"><i class="fa-solid fa-bars"></i></div>
     </nav>
 
     <main class="dashboard-layout">
         
-        <div class="bento-panel col-8" style="animation-delay: 0.1s;">
+        <!-- Hero Identity Panel -->
+        <div class="bento-panel col-7" style="animation-delay: 0.1s;">
             <div class="panel-label">Sys_Profile</div>
             <h1 class="glitch-wrapper" data-text="AHMED SOBHY">AHMED SOBHY</h1>
             <h2 style="color: var(--accent-cyan); font-size: 1rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px;">> Principal Frontend Engineer & Security Architect</h2>
-            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; max-width: 90%;">
-                Bridging high-performance interface architecture with defense-in-depth security protocols. 
-                Currently deployed at Borg El Arab Technological University, engineering the next generation of resilient web infrastructure.
-            </p>
-            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
-                <span style="background: rgba(0, 255, 102, 0.1); color: var(--accent-green); padding: 5px 15px; border: 1px solid var(--accent-green); font-size: 0.7rem; text-transform: uppercase;">Status: Active</span>
-                <span style="background: rgba(0, 229, 255, 0.1); color: var(--accent-cyan); padding: 5px 15px; border: 1px solid var(--accent-cyan); font-size: 0.7rem; text-transform: uppercase;">Clearance: Admin</span>
-            </div>
-        </div>
-
-        <div class="bento-panel col-4" style="animation-delay: 0.2s;">
-            <div class="panel-label">Metrics</div>
-            <div style="display: flex; flex-direction: column; gap: 2rem; height: 100%; justify-content: center;">
-                <div>
-                    <div style="font-family: var(--font-display); font-size: 3.5rem; color: var(--text-bright); line-height: 1;">12+</div>
-                    <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;">Engines Deployed</div>
-                </div>
-                <div>
-                    <div style="font-family: var(--font-display); font-size: 3.5rem; color: var(--text-bright); line-height: 1;">99<span style="color: var(--accent-cyan); font-size: 2rem;">%</span></div>
-                    <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;">Server Uptime</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bento-panel col-8" style="animation-delay: 0.3s;">
-            <div class="panel-label">Active_Nodes</div>
-            <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 2rem; color: var(--text-bright); text-transform: uppercase;">Priority Deployments</h3>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+                <span style="background: rgba(0, 255, 102, 0.1); color: var(--accent-green); padding: 6px 15px; border: 1px solid var(--accent-green); font-size: 0.7rem; text-transform: uppercase;"><i class="fas fa-satellite-dish"></i> Status: Active</span>
+                <span style="background: rgba(0, 229, 255, 0.1); color: var(--accent-cyan); padding: 6px 15px; border: 1px solid var(--accent-cyan); font-size: 0.7rem; text-transform: uppercase;"><i class="fa-brands fa-linux"></i> OS: Ubuntu Core</span>
+                <span style="background: rgba(255, 0, 85, 0.1); color: var(--accent-alert); padding: 6px 15px; border: 1px solid var(--accent-alert); font-size: 0.7rem; text-transform: uppercase;"><i class="fas fa-network-wired"></i> Net_Cert: CCNA</span>
+            </div>
+
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; max-width: 95%;">
+                Bridging high-performance interface architecture with defense-in-depth security protocols. 
+                Currently deployed at Borg El Arab Technological University, engineering the next generation of resilient web infrastructure and deep data structures.
+            </p>
+        </div>
+
+        <!-- Telemetry & Skill Panel -->
+        <div class="bento-panel col-5" style="animation-delay: 0.2s;">
+            <div class="panel-label">Core_Directives</div>
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--text-bright); text-transform: uppercase; margin-bottom: 1.5rem;">Stack Allocation</h3>
+            
+            <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-bright); text-transform: uppercase; letter-spacing: 1px;"><span>JS / React / Three.js</span> <span>95%</span></div>
+                <div class="tech-bar-container"><div class="tech-bar" style="width: 95%;"></div></div>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-bright); text-transform: uppercase; letter-spacing: 1px;"><span>Python / Java / C++</span> <span>85%</span></div>
+                <div class="tech-bar-container"><div class="tech-bar" style="width: 85%; background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green);"></div></div>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-bright); text-transform: uppercase; letter-spacing: 1px;"><span>Cybersecurity / Networking</span> <span>90%</span></div>
+                <div class="tech-bar-container"><div class="tech-bar" style="width: 90%; background: var(--accent-alert); box-shadow: 0 0 10px var(--accent-alert);"></div></div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; margin-top: 2rem; border-top: 1px solid var(--border-glass); padding-top: 1.5rem;">
+                <div>
+                    <div style="font-family: var(--font-display); font-size: 2.5rem; color: var(--text-bright); line-height: 1;">12+</div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Engines Deployed</div>
+                </div>
+                <div>
+                    <div style="font-family: var(--font-display); font-size: 2.5rem; color: var(--text-bright); line-height: 1;">99<span style="color: var(--accent-cyan); font-size: 1.5rem;">%</span></div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Server Uptime</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Directives (Projects) -->
+        <div class="bento-panel col-12" style="animation-delay: 0.3s; padding: 3rem;">
+            <div class="panel-label">Active_Nodes</div>
+            <h3 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 2.5rem; color: var(--text-bright); text-transform: uppercase; text-align: center;">Priority Deployments</h3>
+            
+            <!-- Grid 3x2 for perfect balance with 6 projects -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
 
                 <a href="https://cybersec-roadmap-kappa.vercel.app/" target="_blank" class="cyber-link-card" style="border-color: rgba(0, 255, 102, 0.2);">
-                    <div style="color: var(--accent-green); font-size: 1.5rem; margin-bottom: 10px;"><i class="fas fa-network-wired"></i></div>
-                    <h4 style="color: var(--text-bright); font-size: 1.1rem; text-transform: uppercase; margin-bottom: 5px;">CyberSec Roadmap</h4>
-                    <p style="color: var(--text-muted); font-size: 0.75rem;">Interactive 30-week security engineering guide.</p>
+                    <div style="color: var(--accent-green); font-size: 1.8rem; margin-bottom: 15px;"><i class="fas fa-network-wired"></i></div>
+                    <h4 style="color: var(--text-bright); font-size: 1.2rem; text-transform: uppercase; margin-bottom: 5px;">CyberSec Roadmap</h4>
+                    <p style="color: var(--text-muted); font-size: 0.8rem; line-height: 1.6;">Interactive 30-week security engineering guide.</p>
+                </a>
+
+                <!-- BugsBunny Hardware Project Added to balance the grid -->
+                <a href="#" class="cyber-link-card" style="border-color: rgba(255, 0, 85, 0.2);">
+                    <div style="color: var(--accent-alert); font-size: 1.8rem; margin-bottom: 15px;"><i class="fa-brands fa-raspberry-pi"></i></div>
+                    <h4 style="color: var(--text-bright); font-size: 1.2rem; text-transform: uppercase; margin-bottom: 5px;">BugsBunny Framework</h4>
+                    <p style="color: var(--text-muted); font-size: 0.8rem; line-height: 1.6;">Cybersecurity hardware framework utilizing Raspberry Pi and Windows sync.</p>
                 </a>
 
                 <a href="data-analysis/index.html" class="cyber-link-card">
-                    <div style="color: var(--accent-cyan); font-size: 1.5rem; margin-bottom: 10px;"><i class="fas fa-chart-network"></i></div>
-                    <h4 style="color: var(--text-bright); font-size: 1.1rem; text-transform: uppercase; margin-bottom: 5px;">Enterprise Analytics</h4>
-                    <p style="color: var(--text-muted); font-size: 0.75rem;">High-density data visualization & SQL fetch interface.</p>
+                    <div style="color: var(--accent-cyan); font-size: 1.8rem; margin-bottom: 15px;"><i class="fas fa-chart-network"></i></div>
+                    <h4 style="color: var(--text-bright); font-size: 1.2rem; text-transform: uppercase; margin-bottom: 5px;">Enterprise Analytics</h4>
+                    <p style="color: var(--text-muted); font-size: 0.8rem; line-height: 1.6;">High-density data visualization & SQL fetch interface.</p>
                 </a>
                 
                 <a href="student-system/index.html" class="cyber-link-card">
-                    <div style="color: var(--accent-cyan); font-size: 1.5rem; margin-bottom: 10px;"><i class="fas fa-server"></i></div>
-                    <h4 style="color: var(--text-bright); font-size: 1.1rem; text-transform: uppercase; margin-bottom: 5px;">BTC Admin Node</h4>
-                    <p style="color: var(--text-muted); font-size: 0.75rem;">Advanced Student Management System architecture.</p>
+                    <div style="color: var(--accent-cyan); font-size: 1.8rem; margin-bottom: 15px;"><i class="fas fa-server"></i></div>
+                    <h4 style="color: var(--text-bright); font-size: 1.2rem; text-transform: uppercase; margin-bottom: 5px;">BTC Admin Node</h4>
+                    <p style="color: var(--text-muted); font-size: 0.8rem; line-height: 1.6;">Advanced Student Management System architecture.</p>
                 </a>
                 
                 <a href="weather-app/index.html" class="cyber-link-card">
-                    <div style="color: var(--accent-cyan); font-size: 1.5rem; margin-bottom: 10px;"><i class="fas fa-cloud-bolt"></i></div>
-                    <h4 style="color: var(--text-bright); font-size: 1.1rem; text-transform: uppercase; margin-bottom: 5px;">Atmospheric Data</h4>
-                    <p style="color: var(--text-muted); font-size: 0.75rem;">Real-time weather telemetry and async logic.</p>
+                    <div style="color: var(--accent-cyan); font-size: 1.8rem; margin-bottom: 15px;"><i class="fas fa-cloud-bolt"></i></div>
+                    <h4 style="color: var(--text-bright); font-size: 1.2rem; text-transform: uppercase; margin-bottom: 5px;">Atmospheric Data</h4>
+                    <p style="color: var(--text-muted); font-size: 0.8rem; line-height: 1.6;">Real-time weather telemetry and async logic.</p>
                 </a>
                 
                 <a href="ParmaScure/index.html" class="cyber-link-card">
-                    <div style="color: var(--accent-cyan); font-size: 1.5rem; margin-bottom: 10px;"><i class="fas fa-shield-virus"></i></div>
-                    <h4 style="color: var(--text-bright); font-size: 1.1rem; text-transform: uppercase; margin-bottom: 5px;">ParmaScure</h4>
-                    <p style="color: var(--text-muted); font-size: 0.75rem;">Defense-in-depth medical security framework.</p>
+                    <div style="color: var(--accent-cyan); font-size: 1.8rem; margin-bottom: 15px;"><i class="fas fa-shield-virus"></i></div>
+                    <h4 style="color: var(--text-bright); font-size: 1.2rem; text-transform: uppercase; margin-bottom: 5px;">ParmaScure</h4>
+                    <p style="color: var(--text-muted); font-size: 0.8rem; line-height: 1.6;">Defense-in-depth medical security framework.</p>
                 </a>
             </div>
         </div>
 
-        <div class="bento-panel col-4" style="animation-delay: 0.4s;">
+        <!-- System Health Radar -->
+        <div class="bento-panel col-6" style="animation-delay: 0.4s;">
             <div class="panel-label">Sys_Health</div>
             <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 1rem; color: var(--text-bright); text-transform: uppercase;">Live Diagnostics</h3>
             
             <div class="radar-box">
                 <div class="radar-line"></div>
                 <div class="terminal-text" id="sys-terminal">
-                    <span>> Initializing system checks...</span>
-                    <span>> Memory allocation: Optimal.</span>
-                    <span style="color: var(--accent-green);">> Firewall status: Active.</span>
+                    <span>> Initializing system core checks...</span>
+                    <span>> Memory allocation: Optimal at 32GB DDR5.</span>
+                    <span style="color: var(--accent-green);">> Firewall protocols: RSA-4096 Active.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Trace -->
+        <div class="bento-panel col-6" style="animation-delay: 0.5s;">
+            <div class="panel-label">Net_Trace</div>
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 1rem; color: var(--text-bright); text-transform: uppercase;">Connection Logs</h3>
+            
+            <div class="radar-box" style="border-color: rgba(0, 255, 102, 0.2);">
+                <div class="radar-line" style="background: var(--accent-green); box-shadow: 0 0 15px var(--accent-green);"></div>
+                <div class="terminal-text" id="net-terminal" style="color: var(--accent-green);">
+                    <span>> Tracking incoming packets...</span>
+                    <span>> IPv6 Node [MASKED] connected.</span>
+                    <span style="color: var(--accent-alert);">> Warning: Brute-force attempt blocked on Port 22.</span>
                 </div>
             </div>
         </div>
@@ -214,28 +281,63 @@
             });
         }
 
-        // Live Diagnostic Terminal Generator
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.querySelector('.mobile-menu-toggle');
+        const navLinksContainer = document.querySelector('.nav-links');
+
+        if (mobileMenuBtn && navLinksContainer) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinksContainer.classList.toggle('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (navLinksContainer.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+
+        // Live Diagnostic Terminals Generator
         const sysTerminal = document.getElementById('sys-terminal');
-        const logMessages = [
-            "> Pinging external nodes... [OK]",
+        const sysMessages = [
+            "> Pinging external AWS nodes... [OK]",
             "> Scanning for vulnerabilities... [0 FOUND]",
             "> Running background cron jobs...",
-            "<span style='color: var(--accent-cyan);'>> SSL Handshake verified.</span>",
-            "> Core temperature: 42°C [STABLE]",
+            "<span style='color: var(--accent-cyan);'>> SSL Handshake verified securely.</span>",
+            "> CPU temperature: 42°C [STABLE]",
             "> Routing traffic through proxy..."
         ];
 
-        let logIndex = 0;
+        const netTerminal = document.getElementById('net-terminal');
+        const netMessages = [
+            "> Analyzing deep packet inspection...",
+            "> Deflecting DDOS packets from Region [X]...",
+            "<span style='color: var(--text-bright);'>> Establishing secure SSH tunnel...</span>",
+            "> Refreshing DNS cache...",
+            "<span style='color: var(--accent-alert);'>> Unauthorized access attempt logged.</span>",
+            "> System integrity at 100%."
+        ];
+
+        let sysIndex = 0;
+        let netIndex = 0;
+
         setInterval(() => {
-            if(sysTerminal.children.length > 7) {
-                sysTerminal.removeChild(sysTerminal.firstChild);
-            }
+            if(sysTerminal.children.length > 6) sysTerminal.removeChild(sysTerminal.firstChild);
             const newLine = document.createElement('span');
-            newLine.innerHTML = logMessages[logIndex];
+            newLine.innerHTML = sysMessages[sysIndex];
             sysTerminal.appendChild(newLine);
-            
-            logIndex = (logIndex + 1) % logMessages.length;
+            sysIndex = (sysIndex + 1) % sysMessages.length;
         }, 2500);
+
+        setInterval(() => {
+            if(netTerminal.children.length > 6) netTerminal.removeChild(netTerminal.firstChild);
+            const newLine = document.createElement('span');
+            newLine.innerHTML = netMessages[netIndex];
+            netTerminal.appendChild(newLine);
+            netIndex = (netIndex + 1) % netMessages.length;
+        }, 3200);
     </script>
 </body>
 </html>

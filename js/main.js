@@ -127,7 +127,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
     scene.add(particlesMesh);
 
-    camera.position.z = 12;
+    // التحكم الذكي في حجم الكوكب بناءً على الشاشة
+    function adjustPlanetSize() {
+        if (window.innerWidth <= 768) {
+            camera.position.z = 20; // إبعاد الكاميرا في الموبايل عشان الكوكب يصغر
+        } else {
+            camera.position.z = 12; // الحجم الطبيعي لللاب توب
+        }
+    }
+    adjustPlanetSize();
+
+    // Responsive Canvas Resizing
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        adjustPlanetSize(); // تحديث الحجم لو المستخدم لف شاشة الموبايل
+    });
 
     // 3D Animation Loop
     function animateThreeJS() {

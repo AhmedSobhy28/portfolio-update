@@ -244,8 +244,9 @@ section { padding: 8rem 0; }
     
     /* 2. تكبير حجم الصورة: لتأخذ مساحة مناسبة مقارنة بالكوكب وتبرز بشكل أفضل */
     .hero-image-wrapper { 
-        width: 70vw; 
-        max-width: 320px; 
+        width: 90vw !important; /* تأخذ 90% من عرض الشاشة */
+        max-width: 450px !important; 
+        margin-top: 5vh; /* تظبط مكانها مع النص */
     }
 
     /* 3. تعديل حجم أيقونات التقنيات لتخفيف الزحمة على الشاشة */
@@ -304,6 +305,46 @@ section { padding: 8rem 0; }
     margin-left: 6px;
     animation: cursorBlink 0.8s step-end infinite;
     text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+}
+
+.cyber-btn {
+    background: rgba(0, 229, 255, 0.05);
+    border: 1px solid var(--accent-cyan);
+    color: var(--accent-cyan);
+    padding: 0.8rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.cyber-btn:hover {
+    background: var(--accent-cyan);
+    color: #030507; /* لون غامق للنص عند الوقوف عليه */
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* ستايل زرار الخطر (Alert) لصفحة الـ Contact */
+.cyber-btn-alert {
+    background: rgba(255, 0, 85, 0.05);
+    border: 1px solid var(--accent-alert);
+    color: var(--accent-alert);
+    box-shadow: inset 0 0 10px rgba(255, 0, 85, 0.1);
+}
+
+.cyber-btn-alert:hover {
+    background: var(--accent-alert);
+    color: #FFFFFF;
+    box-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
 }
 
 @keyframes cursorBlink {

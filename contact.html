@@ -118,10 +118,15 @@
 
     <nav class="cyber-nav">
         <div class="nav-logo" style="font-family: var(--font-display); font-size: 1.2rem; color: var(--text-bright);">AHMED SOBHY <span style="color: var(--accent-alert); font-family: var(--font-mono); font-size: 0.7rem;">// SECURE_COMMS</span></div>
+        
         <div class="nav-links">
             <a href="index.html">00. Root</a>
             <a href="dashboard.html">01. Dashboard</a>
             <a href="contact.html" class="active" style="color: var(--accent-alert); border-bottom: 1px solid var(--accent-alert);">02. Comms</a>
+        </div>
+
+        <div class="mobile-menu-toggle">
+            <i class="fa-solid fa-bars"></i>
         </div>
     </nav>
 
@@ -172,8 +177,8 @@
                     <textarea id="message" rows="6" class="cyber-input" placeholder="Write payload here. Awaiting data insertion..." required></textarea>
                 </div>
                 
-                <button type="submit" class="cyber-btn" id="submit-btn" style="width: 100%; background: transparent; border: 1px solid var(--accent-alert); color: var(--accent-alert); font-size: 1rem; padding: 1.2rem;">
-                    <i class="fas fa-radiation" style="margin-right: 10px;"></i> Transmit Package
+                <button type="submit" class="cyber-btn cyber-btn-alert" id="submit-btn" style="width: 100%; font-size: 1rem; padding: 1.2rem;">
+                    <i class="fas fa-radiation"></i> Transmit Package
                 </button>
             </form>
         </section>
@@ -267,15 +272,13 @@
             });
         }
         // Mobile Menu Toggle Logic
+// Mobile Menu Toggle Logic
         const mobileMenuBtn = document.querySelector('.mobile-menu-toggle');
         const navLinksContainer = document.querySelector('.nav-links');
 
         if (mobileMenuBtn && navLinksContainer) {
             mobileMenuBtn.addEventListener('click', () => {
-                // إضافة أو إزالة كلاس active لفتح وقفل القائمة
                 navLinksContainer.classList.toggle('active');
-                
-                // تغيير الأيقونة من ثلاث شرط إلى علامة X
                 const icon = mobileMenuBtn.querySelector('i');
                 if (navLinksContainer.classList.contains('active')) {
                     icon.classList.remove('fa-bars');
