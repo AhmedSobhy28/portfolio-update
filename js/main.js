@@ -52,14 +52,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 2. Orbiting Atmosphere Logic ---
     const orbitIcons = document.querySelectorAll('.orbit-icon');
-    
+    const orbitSystem = document.getElementById('orbit-system');
+
+    // إنشاء خط المدار (الحلقة) اللي توضح إن الأيقونات بتلف حول الكوكب
+    let orbitRing = null;
+    if (orbitSystem) {
+        orbitRing = document.createElement('div');
+        orbitRing.className = 'orbit-ring';
+        orbitSystem.insertBefore(orbitRing, orbitSystem.firstChild);
+    }
+
     // The animation loop for the orbiting elements
     function animateOrbit() {
         const time = Date.now() * 0.0005; // Adjust speed here
         
-        // Dynamic radius based on screen size for responsiveness
-        const orbitRadiusX = Math.min(window.innerWidth * 0.4, 450); 
-        const orbitRadiusY = Math.min(window.innerWidth * 0.15, 150); // Elliptical height creates 3D depth
+        // نصف قطر المدار محسوب بدقة مع حجم الكوكب الجديد على كل شاشة
+        const isMobile = window.innerWidth <= 768;
+        const orbitRadiusX = isMobile ? Math.min(window.innerWidth * 0.58, 290) : Math.min(window.innerWidth * 0.42, 480); 
+        const orbitRadiusY = isMobile ? Math.min(window.innerWidth * 0.22, 130) : Math.min(window.innerWidth * 0.17, 175);
+
+        // تحديث حجم خط المدار بحيث يطابق تماماً المسار اللي الأيقونات بتلف فيه حول الكوكب
+        if (orbitRing) {
+            orbitRing.style.width = `${orbitRadiusX * 2}px`;
+            orbitRing.style.height = `${orbitRadiusY * 2}px`;
+        }
         
         orbitIcons.forEach((icon, index) => {
             // Space them out evenly around the circle
@@ -87,85 +103,146 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 3. Three.js Digital Earth Background ---
     const container = document.getElementById('canvas-container');
+    const navBarEl = document.querySelector('.cyber-nav');
+
+    // بتضبط مكان وحجم حاوية الكانفاس بحيث تبدأ تحت البار العلوي تماماً
+    // وبالتالي الكوكب يظهر كامل من غير أي تداخل مع الـ Navbar
+    function adjustCanvasContainer() {
+        const navH = navBarEl ? navBarEl.offsetHeight : 0;
+        container.style.top = `${navH}px`;
+        container.style.height = `calc(100% - ${navH}px)`;
+    }
+    adjustCanvasContainer();
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio); 
     container.appendChild(renderer.domElement);
 
-    // Using SphereGeometry to create the Earth planet shape
-    const geometry = new THREE.SphereGeometry(6, 32, 32); 
-    
-    // Wireframe material to give it that digital/cyber mapping look
-    const material = new THREE.MeshBasicMaterial({ 
-        color: 0x00E5FF, 
-        wireframe: true, 
-        transparent: true, 
-        opacity: 0.05 
+    // ═══════════════════════════════════════════════════════
+    // DIGITAL EARTH — طبقات بصرية محسّنة ومتناسقة
+    // ═══════════════════════════════════════════════════════
+    const globeRadius = 6;
+
+    // طبقة 1: الشبكة الرئيسية — شفافية أعلى للظهور الواضح
+    const geometry = new THREE.SphereGeometry(globeRadius, 40, 40);
+    const material = new THREE.MeshBasicMaterial({
+        color: 0x00E5FF,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.13
     });
-    
     const digitalEarth = new THREE.Mesh(geometry, material);
     scene.add(digitalEarth);
-    
-    // Add ambient stars/data particles in the background
+
+    // طبقة 2: هالة الغلاف الجوي — كرة خارجية أكبر تدور عكسياً لإضافة عمق
+    const outerGeo = new THREE.SphereGeometry(globeRadius * 1.07, 20, 20);
+    const outerMat = new THREE.MeshBasicMaterial({
+        color: 0x00E5FF,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.04
+    });
+    const outerSphere = new THREE.Mesh(outerGeo, outerMat);
+    scene.add(outerSphere);
+
+    // طبقة 3: نقاط التقاء خطوط الشبكة — تومض بنبضة حيوية
+    const nodeGeo = new THREE.SphereGeometry(0.07, 6, 6);
+    const nodeMat = new THREE.MeshBasicMaterial({
+        color: 0x00E5FF,
+        transparent: true,
+        opacity: 0.9
+    });
+    const nodeGroup = new THREE.Group();
+    const latLines = [-60, -30, 0, 30, 60];
+    latLines.forEach(lat => {
+        const phi = (90 - lat) * (Math.PI / 180);
+        for (let lon = 0; lon < 360; lon += 36) {
+            const theta = lon * (Math.PI / 180);
+            const node = new THREE.Mesh(nodeGeo, nodeMat);
+            node.position.set(
+                globeRadius * Math.sin(phi) * Math.cos(theta),
+                globeRadius * Math.cos(phi),
+                globeRadius * Math.sin(phi) * Math.sin(theta)
+            );
+            nodeGroup.add(node);
+        }
+    });
+    digitalEarth.add(nodeGroup);
+
+    // طبقة 4: حلقة خط الاستواء المضيئة — ثقل بصري مميز للكوكب
+    const equatorGeo = new THREE.TorusGeometry(globeRadius, 0.025, 8, 120);
+    const equatorMat = new THREE.MeshBasicMaterial({
+        color: 0x00E5FF,
+        transparent: true,
+        opacity: 0.45
+    });
+    const equatorRing = new THREE.Mesh(equatorGeo, equatorMat);
+    equatorRing.rotation.x = Math.PI / 2;
+    digitalEarth.add(equatorRing);
+
+    // جسيمات الفضاء — أكثر وضوحاً وباللون السيان
     const particlesGeo = new THREE.BufferGeometry();
-    const particlesCount = 300;
+    const particlesCount = 400;
     const posArray = new Float32Array(particlesCount * 3);
-    
-    for(let i = 0; i < particlesCount * 3; i++) {
-        posArray[i] = (Math.random() - 0.5) * 25;
+    for (let i = 0; i < particlesCount * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 30;
     }
     particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const particlesMat = new THREE.PointsMaterial({
-        size: 0.02,
-        color: 0x64748B,
+        size: 0.05,
+        color: 0x00E5FF,
         transparent: true,
-        opacity: 0.3
+        opacity: 0.25
     });
     const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
     scene.add(particlesMesh);
 
-    // التحكم الذكي في حجم الكوكب بناءً على الشاشة
+    // ضبط موضع الكاميرا بما يتناسق مع الصورة والاسم والأيقونات
     function adjustPlanetSize() {
         if (window.innerWidth <= 768) {
-            camera.position.z = 20; // إبعاد الكاميرا في الموبايل عشان الكوكب يصغر
+            camera.position.z = 18; // الكوكب يملأ عرض الشاشة بالكامل تقريباً على الموبايل
         } else {
-            camera.position.z = 12; // الحجم الطبيعي لللاب توب
+            camera.position.z = 11; // حجم أكبر وأكثر إبهاراً على الشاشات الكبيرة
         }
     }
     adjustPlanetSize();
 
-    // Responsive Canvas Resizing
+    // تحديث الكانفاس عند تغيير حجم الشاشة
     window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
+        adjustCanvasContainer();
+        camera.aspect = container.clientWidth / container.clientHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        adjustPlanetSize(); // تحديث الحجم لو المستخدم لف شاشة الموبايل
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        adjustPlanetSize();
     });
 
-    // 3D Animation Loop
+    // حلقة الأنيميشن الرئيسية
+    let animTime = 0;
     function animateThreeJS() {
         requestAnimationFrame(animateThreeJS);
-        
-        // Earth rotation
-        digitalEarth.rotation.y += 0.002;
-        digitalEarth.rotation.x = 0.2; // Slight tilt like Earth's axis
-        
-        // Particle slow rotation
+        animTime += 0.012;
+
+        // دوران الكوكب الرئيسي
+        digitalEarth.rotation.y += 0.0025;
+        digitalEarth.rotation.x = 0.2;
+
+        // الكرة الخارجية تدور عكسياً للإيهام بالعمق
+        outerSphere.rotation.y -= 0.001;
+        outerSphere.rotation.x = -0.1;
+
+        // نبضة النقاط المضيئة — تتنفس بشكل سلس
+        nodeMat.opacity = 0.55 + Math.sin(animTime * 1.5) * 0.35;
+
+        // دوران جسيمات الفضاء
         particlesMesh.rotation.y -= 0.0005;
 
         renderer.render(scene, camera);
     }
     animateThreeJS();
-
-    // Responsive Canvas Resizing
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
 
     // --- 4. System_Bio Terminal Typewriter Effect ---
     const aboutSection = document.getElementById('about');

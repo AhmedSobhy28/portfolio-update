@@ -94,6 +94,8 @@ body::before {
 
 /* HERO LAYERING UPDATE */
 .hero-section { height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+/* top و height بيتم ضبطهم ديناميكياً من main.js بحيث تبدأ الحاوية تحت البار العلوي تماماً
+   وبالتالي الكوكب يبقى كامل وواضح من غير ما يتداخل مع الـ Navbar */
 #canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 
 /* Base typography applied to both text layers to ensure perfect overlap */
@@ -152,6 +154,18 @@ body::before {
     font-size: 1.8rem; font-family: var(--font-display); font-weight: 700;
 }
 .orbit-icon span { font-size: 0.65rem; margin-top: 5px; font-family: var(--font-mono); letter-spacing: 1px; color: var(--text-bright); text-shadow: none; font-weight: 400;}
+
+/* مسار المدار — خط بيضاوي خفيف يوضّح إن الأيقونات بتلف حول الكوكب بالظبط زي الكواكب حول الشمس */
+.orbit-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 1px dashed rgba(0, 229, 255, 0.18);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 3;
+}
 
 .scroll-indicator { position: absolute; bottom: 3rem; z-index: 4; font-size: 0.75rem; color: var(--text-muted); letter-spacing: 2px; animation: bounce 2s infinite; }
 
@@ -244,24 +258,24 @@ section { padding: 8rem 0; }
 @media (max-width: 768px) {
     .about-grid { grid-template-columns: 1fr; }
     
-    /* 1. إصلاح حجم النص: استخدام vw ليتناسب تلقائياً مع عرض شاشة الموبايل ولا يُقطع */
-    .hero-name-bg, .hero-name-fg { 
-        font-size: 11.5vw !important; 
-        letter-spacing: -1px;
-    }
-    
-    .hero-image-wrapper { 
-        width: 50vw !important; 
-        min-width: 200px !important;
-        max-width: 240px !important; 
-        margin-top: 0 !important;
-        transform: translateY(12vh) !important; /* هذا السطر هو الذي سيدفعها للأسفل لترتكز على الكوكب */
+/* 1. إصلاح حجم النص ليكون داخل الشاشة بالكامل ومتمركز خلف الصورة */
+    .hero-name-bg, .hero-name-fg {
+        font-size: 9vw !important;       /* مقاس يضمن ظهور الاسم كاملاً داخل أي موبايل */
+        letter-spacing: -0.5px !important;
+        white-space: nowrap !important;
+        width: 100vw !important;         /* عرض الحاوية = عرض الشاشة بالكامل */
+        text-align: center !important;   /* توسيط النص داخل الحاوية */
+        left: 50% !important;
+        transform: translate(-50%, -50%) translateY(3vh) !important;
     }
 
-    /* 2. تحريك النص قليلاً ليتناسب مع المكان الجديد للصورة */
-    .hero-name-bg, .hero-name-fg {
-        font-size: 14vw !important;
-        transform: translate(-50%, -50%) translateY(4vh) !important;
+    .hero-image-wrapper { 
+        width: 55vw !important; 
+        min-width: 200px !important;
+        max-width: 250px !important; 
+        margin-top: 0 !important;
+        transform: translateY(3vh) !important;
+        user-select: none;
     }
 
     /* 3. تعديل حجم أيقونات التقنيات لتخفيف الزحمة على الشاشة */
