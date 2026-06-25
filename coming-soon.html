@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmed Sobhy | Node Offline</title>
+
+    <link rel="icon" href="logo.png" type="image/png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* --- Coming Soon Page Specific Visuals --- */
+        /* التعديل هنا: السماح بالسكرول العمودي ومنع الأفقي فقط */
+        body { display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
+        
+        .construction-layout {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 6rem 4%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .construction-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--accent-alert);
+            border-radius: 2px;
+            padding: 4rem;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 40px rgba(255, 0, 85, 0.15);
+            animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .panel-label-alert {
+            position: absolute; top: 1rem; left: 1rem; font-size: 0.65rem; 
+            letter-spacing: 2px; color: var(--accent-alert); text-transform: uppercase; font-weight: bold;
+        }
+
+        .icon-wrapper {
+            font-size: 4rem;
+            color: var(--accent-alert);
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 15px rgba(255, 0, 85, 0.4));
+            animation: pulse-alert 2s infinite;
+        }
+
+        @keyframes pulse-alert {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.95); }
+        }
+
+        .glitch-wrapper {
+            position: relative; font-family: var(--font-display); font-size: 3.5rem; 
+            color: var(--text-bright); letter-spacing: -2px; text-transform: uppercase; margin-bottom: 1.5rem;
+        }
+
+        /* 🌟 التعديل هنا: تحديد طول الشاشة وعمل سكرول داخلي */
+        .radar-box {
+            position: relative; overflow-x: hidden; overflow-y: auto; text-align: left;
+            border: 1px solid rgba(255, 0, 85, 0.2); background: rgba(0,0,0,0.8);
+            padding: 1.5rem; border-radius: 2px; margin: 2rem auto; max-width: 600px;
+            max-height: 200px; 
+            scroll-behavior: smooth;
+        }
+        
+        /* تظبيط شكل السكرول بار بتاع الشاشة عشان يليق مع الديزاين */
+        .radar-box::-webkit-scrollbar { width: 5px; }
+        .radar-box::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        .radar-box::-webkit-scrollbar-thumb { background: var(--accent-alert); border-radius: 5px; }
+        
+        .radar-line {
+            position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--accent-alert); box-shadow: 0 0 15px var(--accent-alert);
+            animation: scanline 3s linear infinite; opacity: 0.5;
+        }
+
+        @keyframes scanline { 0% { top: -5%; } 100% { top: 105%; } }
+
+        .terminal-text {
+            color: var(--text-muted); font-size: 0.85rem; line-height: 1.8;
+            font-family: var(--font-mono); display: flex; flex-direction: column; gap: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .construction-panel { padding: 3rem 1.5rem; }
+            .glitch-wrapper { font-size: 2.5rem; }
+            .icon-wrapper { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-glow" style="background: radial-gradient(circle, rgba(255, 0, 85, 0.08) 0%, rgba(3,5,7,0) 70%);"></div>
+    <div class="cyber-wave-container">
+        <svg class="cyber-wave-svg" viewBox="0 0 100 1000" preserveAspectRatio="none">
+            <path d="M50,0 Q90,50 50,100 T50,200 Q90,250 50,300 T50,400 Q90,450 50,500 T50,600 Q90,650 50,700 T50,800 Q90,850 50,900 T50,1000" fill="none" stroke="var(--accent-alert)" stroke-width="1.5" />
+        </svg>
+    </div>
+
+    <nav class="cyber-nav">
+        <div class="nav-logo" style="font-family: var(--font-display); font-size: 1.2rem; color: var(--text-bright);">AHMED SOBHY <span style="color: var(--accent-alert); font-family: var(--font-mono); font-size: 0.7rem;">// SYS_ALERT</span></div>
+        <div class="nav-links">
+            <a href="index.html">00. Root</a>
+            <a href="dashboard.html">01. Dashboard</a>
+            <a href="contact.html">02. Comms</a>
+        </div>
+        <div class="mobile-menu-toggle"><i class="fa-solid fa-bars"></i></div>
+    </nav>
+
+    <main class="construction-layout">
+        <div class="construction-panel">
+            <div class="panel-label-alert"><i class="fa-solid fa-triangle-exclamation"></i> Status: Offline</div>
+            
+            <div class="icon-wrapper">
+                <i class="fa-solid fa-person-digging"></i>
+            </div>
+
+            <h1 class="glitch-wrapper">NODE UNDER CONSTRUCTION</h1>
+            
+            <p style="color: var(--text-muted); font-size: 1rem; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+                This engineering project is currently in the development phase. The codebase is compiling and security protocols are being established.
+            </p>
+
+            <div class="radar-box">
+                <div class="radar-line"></div>
+                <div class="terminal-text" id="dev-terminal">
+                    </div>
+            </div>
+
+            <a href="index.html#engines" class="cyber-btn" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">
+                <i class="fa-solid fa-arrow-left" style="margin-right: 8px;"></i> Return to Active Nodes
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Terminal Typing Effect
+        const terminal = document.getElementById('dev-terminal');
+        const radarBox = document.querySelector('.radar-box'); // 🌟 تم إضافة هذا المتغير للتحكم في السكرول
+        const lines = [
+            "> Initializing connection to target node...",
+            "<span style='color: var(--accent-alert);'>> ERROR 404: Engine not found on live server.</span>",
+            "> Running diagnostics...",
+            "<span style='color: #00E5FF;'>> STATUS: Development branch is currently active.</span>",
+            "> Compiling source code and building UI components...",
+            "> Building secure API endpoints...",
+            "> Encrypting data streams...",
+            "> ETA: Checking commits... [PENDING]",
+            "> Awaiting deployment to production."
+        ];
+
+        let lineIndex = 0;
+        function typeLine() {
+            if (lineIndex < lines.length) {
+                const span = document.createElement('span');
+                span.innerHTML = lines[lineIndex];
+                terminal.appendChild(span);
+                
+                // 🌟 عمل Auto-Scroll للشاشة مع كل سطر جديد
+                radarBox.scrollTop = radarBox.scrollHeight;
+
+                lineIndex++;
+                setTimeout(typeLine, Math.random() * 500 + 300);
+            } else {
+                const cursor = document.createElement('span');
+                cursor.innerHTML = "> <span style='animation: blink 1s infinite;'>_</span>";
+                terminal.appendChild(cursor);
+                
+                // 🌟 سكرول أخير لضمان ظهور المؤشر
+                radarBox.scrollTop = radarBox.scrollHeight;
+            }
+        }
+        
+        // Start typing after a short delay
+        setTimeout(typeLine, 800);
+
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.querySelector('.mobile-menu-toggle');
+        const navLinksContainer = document.querySelector('.nav-links');
+
+        if (mobileMenuBtn && navLinksContainer) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinksContainer.classList.toggle('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (navLinksContainer.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
